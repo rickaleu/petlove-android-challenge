@@ -1,6 +1,8 @@
 package br.com.ricardo.filmespopulares.Presenter;
 
+import android.nfc.Tag;
 import android.util.Log;
+import android.widget.Toast;
 
 import br.com.ricardo.filmespopulares.model.FilmInteractor;
 import br.com.ricardo.filmespopulares.model.response.ResponseFilms;
@@ -9,6 +11,8 @@ import br.com.ricardo.filmespopulares.view.MovieView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 public class MoviePresenterImpl implements MoviePresenter{
 
@@ -34,13 +38,13 @@ public class MoviePresenterImpl implements MoviePresenter{
     @Override
     public void requestPopularMovies() {
 
-     //Aqui, é a parte final de toda a requisição do Retrofit.
+        //Aqui, é a parte final de toda a requisição do Retrofit.
         filmInteractor.requestRetrofitAccess().enqueue(new Callback<ResultFilms>() {
         @Override
         public void onResponse(Call<ResultFilms> call, Response<ResultFilms> response) {
 
             if(!response.isSuccessful()) {
-                Log.i("TAG", "Erro: " + response.code());
+                Log.i(TAG, "Erro: " + response.code());
 
             } else {
 
@@ -52,14 +56,13 @@ public class MoviePresenterImpl implements MoviePresenter{
                         movieView.showData(rf);
                     }
                 }
-
             }
 
         }
 
         @Override
         public void onFailure(Call<ResultFilms> call, Throwable t) {
-            Log.i("ERROOOOO", "Deu erro");
+            Log.i(TAG, "Erro. Falha na chamada da API.");
         }
     });
 

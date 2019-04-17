@@ -4,5 +4,9 @@
     <!-- Main -->
     <string name="main_toolbar_title">Filmes Populares</string>
 
+    <!-- Item film -->
+    <string name="item_movie_vote_average">Média de voto:</string>
+    <string name="item_movie_release_date">Lançamento:</string>
+
 
 </resources>

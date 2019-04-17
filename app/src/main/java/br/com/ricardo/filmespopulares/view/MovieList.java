@@ -2,6 +2,7 @@ package br.com.ricardo.filmespopulares.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -48,8 +49,8 @@ public class MovieList extends AppCompatActivity implements MovieView{
         movieList.add(item);
 
         recyclerViewMovieList = (RecyclerView) findViewById(R.id.recycler_movielist);
-        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(MovieList.this);
-        recyclerViewMovieList.setLayoutManager(linearLayoutManager);
+        RecyclerView.LayoutManager gridLayoutManager = new GridLayoutManager(MovieList.this, 2);
+        recyclerViewMovieList.setLayoutManager(gridLayoutManager);
         recyclerViewMovieList.setAdapter(new MovieListAdapter(movieList));
 
     }
