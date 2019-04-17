@@ -1,10 +1,7 @@
 package br.com.ricardo.filmespopulares.Presenter;
 
-import android.nfc.Tag;
 import android.util.Log;
-import android.widget.Toast;
-
-import br.com.ricardo.filmespopulares.model.FilmInteractor;
+import br.com.ricardo.filmespopulares.model.FilmInteractorImpl;
 import br.com.ricardo.filmespopulares.model.response.ResponseFilms;
 import br.com.ricardo.filmespopulares.model.response.ResultFilms;
 import br.com.ricardo.filmespopulares.view.MovieView;
@@ -16,17 +13,13 @@ import static android.content.ContentValues.TAG;
 
 public class MoviePresenterImpl implements MoviePresenter{
 
+    private FilmInteractorImpl filmInteractor;
     private MovieView movieView;
-    private FilmInteractor filmInteractor;
 
-    //Construtor dessa implementação, passando como parâmetro um atributo do tipo FilmInteractor.
-    public MoviePresenterImpl(FilmInteractor interactor) {
-        this.filmInteractor = interactor;
-    }
-
-    @Override
-    public void attachView(MovieView view) {
-        movieView = view;
+    //Construtor setado pedindo apenas a view necessária pra carregar a lista. mas instanciando a classe FilmInteractorImpl
+    public MoviePresenterImpl(MovieView movieView) {
+        this.movieView = movieView;
+        this.filmInteractor = new FilmInteractorImpl();
     }
 
     @Override
@@ -34,17 +27,22 @@ public class MoviePresenterImpl implements MoviePresenter{
         movieView = null;
     }
 
-    //Nesse método, de fato, a mágica acontece. Que é onde enfileiramos a requisição do método lá da Interface FilmService.
+    //Aqui é quando a parte final da chamada da APU acontece.
+    // Que é onde passamos a API Key como resto da url de requisição e
+    // enfileiramos a requisição do método lá da Interface FilmService.
     @Override
     public void requestPopularMovies() {
 
-        //Aqui, é a parte final de toda a requisição do Retrofit.
-        filmInteractor.requestRetrofitAccess().enqueue(new Callback<ResultFilms>() {
+        filmInteractor
+                .getRetrofitInstance()
+                .getPopularFilms("b70848b875278d63417beecbdddc4841")
+                .enqueue(new Callback<ResultFilms>() {
         @Override
         public void onResponse(Call<ResultFilms> call, Response<ResultFilms> response) {
 
             if(!response.isSuccessful()) {
                 Log.i(TAG, "Erro: " + response.code());
+                movieView.showError();
 
             } else {
 
@@ -57,12 +55,12 @@ public class MoviePresenterImpl implements MoviePresenter{
                     }
                 }
             }
-
         }
 
         @Override
         public void onFailure(Call<ResultFilms> call, Throwable t) {
             Log.i(TAG, "Erro. Falha na chamada da API.");
+            movieView.showError();
         }
     });
 

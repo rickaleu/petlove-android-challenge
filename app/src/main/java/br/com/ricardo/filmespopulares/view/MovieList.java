@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,6 @@ public class MovieList extends AppCompatActivity implements MovieView{
     private Toolbar toolbarMovieList;
     private RecyclerView recyclerViewMovieList;
 
-    private FilmInteractor filmInteractor;
     private MoviePresenter moviePresenter;
 
     private List<ResponseFilms> movieList;
@@ -35,10 +35,14 @@ public class MovieList extends AppCompatActivity implements MovieView{
         toolbarMovieList = (Toolbar) findViewById(R.id.toolbar_movielist);
         setSupportActionBar(toolbarMovieList);
 
-        filmInteractor = new FilmInteractorImpl();
-        moviePresenter = new MoviePresenterImpl(filmInteractor);
-        movieList = new ArrayList<>();
+        //Instanciando a View nesta activity que assumiu o papel de "Impl" da parte do View no MVP.
+        //Passando apenas a view para a MoviePresenterImpl
+        moviePresenter = new MoviePresenterImpl(this);
 
+        movieList = new ArrayList<>();
+        recyclerViewMovieList = (RecyclerView) findViewById(R.id.recycler_movielist);
+        RecyclerView.LayoutManager gridLayoutManager = new GridLayoutManager(MovieList.this, 2);
+        recyclerViewMovieList.setLayoutManager(gridLayoutManager);
 
     }
 
@@ -47,26 +51,26 @@ public class MovieList extends AppCompatActivity implements MovieView{
     public void showData(ResponseFilms item) {
 
         movieList.add(item);
-
-        recyclerViewMovieList = (RecyclerView) findViewById(R.id.recycler_movielist);
-        RecyclerView.LayoutManager gridLayoutManager = new GridLayoutManager(MovieList.this, 2);
-        recyclerViewMovieList.setLayoutManager(gridLayoutManager);
         recyclerViewMovieList.setAdapter(new MovieListAdapter(movieList));
-
     }
+
+    @Override
+    public void showError() {
+        Toast.makeText(this, "Erro ao obter a lista de filmes.", Toast.LENGTH_LONG).show();
+    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        moviePresenter.attachView(this);
         moviePresenter.requestPopularMovies();
     }
 
     @Override
     protected void onStop() {
+        super.onStop();
 
         moviePresenter.detachView();
-        super.onStop();
     }
 }

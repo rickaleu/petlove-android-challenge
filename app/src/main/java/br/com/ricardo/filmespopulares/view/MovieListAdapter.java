@@ -17,7 +17,7 @@ import br.com.ricardo.filmespopulares.model.response.ResponseFilms;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListViewHolder> {
 
-    private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w342";
+    private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
     private List<ResponseFilms> movieLists;
 
@@ -67,8 +67,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             textMovieTitle = (TextView) itemView.findViewById(R.id.item_movie_title);
             textMovieVoteAverage = (TextView) itemView.findViewById(R.id.item_movie_vote);
             textMovieReleaseDate = (TextView) itemView.findViewById(R.id.item_movie_release_date);
-
-
 
         }
     }
