@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Filmes Populares</string>
+
+    <!-- Main -->
+    <string name="main_toolbar_title">Filmes Populares</string>
+
+
 </resources>
