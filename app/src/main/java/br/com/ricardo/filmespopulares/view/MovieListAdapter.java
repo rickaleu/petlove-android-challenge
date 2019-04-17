@@ -10,14 +10,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.com.ricardo.filmespopulares.R;
-import br.com.ricardo.filmespopulares.model.Film;
+import br.com.ricardo.filmespopulares.model.response.ResponseFilms;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListViewHolder> {
 
-    private List<Film> filmList;
+    private List<ResponseFilms> movieLists;
 
-    public MovieListAdapter(List<Film> filmList) {
-        this.filmList = filmList;
+    public MovieListAdapter(List<ResponseFilms> movieLists) {
+        this.movieLists = movieLists;
     }
 
     @NonNull
@@ -34,13 +34,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     @Override
     public void onBindViewHolder(@NonNull MovieListViewHolder movieListViewHolder, int i) {
 
-        movieListViewHolder.movieTitle.setText(filmList.get(i).getName());
+        movieListViewHolder.movieTitle.setText(movieLists.get(i).getOriginal_title());
 
     }
 
     @Override
     public int getItemCount() {
-        return filmList.size();
+        return movieLists.size();
     }
 
     public class MovieListViewHolder extends RecyclerView.ViewHolder{
