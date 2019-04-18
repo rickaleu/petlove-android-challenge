@@ -2,8 +2,8 @@ package br.com.ricardo.filmespopulares.Presenter;
 
 import android.util.Log;
 import br.com.ricardo.filmespopulares.model.FilmInteractorImpl;
-import br.com.ricardo.filmespopulares.model.response.ResponseFilms;
-import br.com.ricardo.filmespopulares.model.response.ResultFilms;
+import br.com.ricardo.filmespopulares.model.pojo.ResponseFilm;
+import br.com.ricardo.filmespopulares.model.pojo.ResultFilms;
 import br.com.ricardo.filmespopulares.view.MovieView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,13 +46,17 @@ public class MoviePresenterImpl implements MoviePresenter{
 
             } else {
 
-                ResultFilms resultFilms = response.body();
+                try{
+                    ResultFilms resultFilms = response.body();
 
-                if(resultFilms != null){
-                    for(ResponseFilms rf : resultFilms.getResults()){
+                    if(resultFilms != null){
+                        for(ResponseFilm rf : resultFilms.getResults()){
 
-                        movieView.showData(rf);
+                            movieView.showData(rf);
+                        }
                     }
+                } catch (Exception e){
+                    Log.i(TAG, "Erro. Falha na chamada da API.");
                 }
             }
         }

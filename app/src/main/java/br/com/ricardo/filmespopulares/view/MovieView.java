@@ -1,10 +1,10 @@
 package br.com.ricardo.filmespopulares.view;
 
-import br.com.ricardo.filmespopulares.model.response.ResponseFilms;
+import br.com.ricardo.filmespopulares.model.pojo.ResponseFilm;
 
 public interface MovieView {
 
-    void showData(ResponseFilms item);
+    void showData(ResponseFilm item);
     void showError();
 
 }

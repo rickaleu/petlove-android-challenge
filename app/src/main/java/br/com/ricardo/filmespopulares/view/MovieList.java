@@ -1,9 +1,9 @@
 package br.com.ricardo.filmespopulares.view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
@@ -14,18 +14,16 @@ import java.util.List;
 import br.com.ricardo.filmespopulares.Presenter.MoviePresenter;
 import br.com.ricardo.filmespopulares.Presenter.MoviePresenterImpl;
 import br.com.ricardo.filmespopulares.R;
-import br.com.ricardo.filmespopulares.model.FilmInteractor;
-import br.com.ricardo.filmespopulares.model.FilmInteractorImpl;
-import br.com.ricardo.filmespopulares.model.response.ResponseFilms;
+import br.com.ricardo.filmespopulares.model.pojo.ResponseFilm;
 
-public class MovieList extends AppCompatActivity implements MovieView{
+public class MovieList extends AppCompatActivity implements MovieView {
 
     private Toolbar toolbarMovieList;
     private RecyclerView recyclerViewMovieList;
 
     private MoviePresenter moviePresenter;
 
-    private List<ResponseFilms> movieList;
+    private List<ResponseFilm> movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +46,27 @@ public class MovieList extends AppCompatActivity implements MovieView{
 
 
     @Override
-    public void showData(ResponseFilms item) {
+    public void showData(ResponseFilm item) {
 
         movieList.add(item);
-        recyclerViewMovieList.setAdapter(new MovieListAdapter(movieList));
+
+        MovieListAdapter adapter = new MovieListAdapter(movieList);
+        recyclerViewMovieList.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new MovieListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+
+                Intent intent = new Intent(MovieList.this, MovieDetail.class);
+
+                ResponseFilm film = movieList.get(position);
+
+                intent.putExtra(MovieDetail.EXTRA_FILM, film);
+                startActivity(intent);
+
+
+            }
+        });
     }
 
     @Override
@@ -73,4 +88,6 @@ public class MovieList extends AppCompatActivity implements MovieView{
 
         moviePresenter.detachView();
     }
+
+
 }
