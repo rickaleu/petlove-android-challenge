@@ -1,9 +1,11 @@
 package br.com.ricardo.filmespopulares.Presenter;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import br.com.ricardo.filmespopulares.model.FilmInteractorImpl;
 import br.com.ricardo.filmespopulares.model.pojo.ResponseFilm;
 import br.com.ricardo.filmespopulares.model.pojo.ResultFilms;
+import br.com.ricardo.filmespopulares.view.MovieListAdapter;
 import br.com.ricardo.filmespopulares.view.MovieView;
 import retrofit2.Call;
 import retrofit2.Callback;

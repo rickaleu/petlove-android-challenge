@@ -20,6 +20,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     public static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
     private List<ResponseFilm> movieLists;
+
     //Atributo da interface.
     private static OnItemClickListener clickListener;
 
@@ -55,6 +56,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     public int getItemCount() {
         return movieLists.size();
     }
+
+    public void clear() {
+        movieLists.clear();
+        notifyDataSetChanged();
+    }
+
+
 
     public class MovieListViewHolder extends RecyclerView.ViewHolder{
 

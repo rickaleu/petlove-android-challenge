@@ -14,4 +14,10 @@
     <string name="movie_detail_film_rate">Avaliação:</string>
 
 
+    <!-- Error Message -->
+    <string name="error_movielist">Erro ao obter a lista de filmes.</string>
+    <string name="error_movie_detail">Erro ao obter os dados dos filmes.</string>
+
+
+
 </resources>

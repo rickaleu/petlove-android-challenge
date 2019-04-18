@@ -1,11 +1,16 @@
 package br.com.ricardo.filmespopulares.view;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,6 +25,9 @@ public class MovieList extends AppCompatActivity implements MovieView {
 
     private Toolbar toolbarMovieList;
     private RecyclerView recyclerViewMovieList;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressBar progressBarMovieList;
+    private MovieListAdapter adapter;
 
     private MoviePresenter moviePresenter;
 
@@ -38,9 +46,30 @@ public class MovieList extends AppCompatActivity implements MovieView {
         moviePresenter = new MoviePresenterImpl(this);
 
         movieList = new ArrayList<>();
+
+        progressBarMovieList = (ProgressBar) findViewById(R.id.progressBar_movielist);
+        progressBarMovieList.setVisibility(View.VISIBLE);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container_movielist);
+
         recyclerViewMovieList = (RecyclerView) findViewById(R.id.recycler_movielist);
         RecyclerView.LayoutManager gridLayoutManager = new GridLayoutManager(MovieList.this, 2);
         recyclerViewMovieList.setLayoutManager(gridLayoutManager);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+
+                        adapter.clear();
+                        moviePresenter.requestPopularMovies();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
 
     }
 
@@ -48,10 +77,13 @@ public class MovieList extends AppCompatActivity implements MovieView {
     @Override
     public void showData(ResponseFilm item) {
 
+        progressBarMovieList.setVisibility(View.GONE);
+
         movieList.add(item);
 
-        MovieListAdapter adapter = new MovieListAdapter(movieList);
+        adapter = new MovieListAdapter(movieList);
         recyclerViewMovieList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         adapter.setOnItemClickListener(new MovieListAdapter.OnItemClickListener() {
             @Override
@@ -71,7 +103,7 @@ public class MovieList extends AppCompatActivity implements MovieView {
 
     @Override
     public void showError() {
-        Toast.makeText(this, "Erro ao obter a lista de filmes.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.error_movielist), Toast.LENGTH_LONG).show();
     }
 
 
@@ -88,6 +120,5 @@ public class MovieList extends AppCompatActivity implements MovieView {
 
         moviePresenter.detachView();
     }
-
 
 }
