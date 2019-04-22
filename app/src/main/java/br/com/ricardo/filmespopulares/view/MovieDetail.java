@@ -2,10 +2,11 @@ package br.com.ricardo.filmespopulares.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import br.com.ricardo.filmespopulares.R;
-import br.com.ricardo.filmespopulares.model.pojo.ResponseFilm;
+import br.com.ricardo.filmespopulares.model.response.ResponseFilm;
 
 public class MovieDetail extends AppCompatActivity {
 
@@ -23,9 +24,9 @@ public class MovieDetail extends AppCompatActivity {
     private final String backDrop = "w780";
     private final String thumb = "w154";
 
+    private FrameLayout frameContainerMovieDetail;
     private ProgressBar progressBarMovieDetail;
-    private LinearLayout linearContainerMovieDetail;
-    private TextView textMovieDetailTitle;
+    private Toolbar toolbarMovieDetail;
     private ImageView imageMovieDetail;
     private ImageView imageMovieThumb;
     private TextView textMovideDetailOriginalName;
@@ -40,9 +41,13 @@ public class MovieDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
+        toolbarMovieDetail = (Toolbar) findViewById(R.id.toolbar_movie_detail);
+        setSupportActionBar(toolbarMovieDetail);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        frameContainerMovieDetail = (FrameLayout) findViewById(R.id.frame_container_movie_detail);
         progressBarMovieDetail = (ProgressBar) findViewById(R.id.progressBar_movie_detail);
-        linearContainerMovieDetail = (LinearLayout) findViewById(R.id.linear_container_movie_detail);
-        textMovieDetailTitle = (TextView) findViewById(R.id.text_movie_detail_title);
         imageMovieDetail = (ImageView) findViewById(R.id.image_movie_detail);
         imageMovieThumb = (ImageView) findViewById(R.id.image_movie_detail_thumb);
         textMovideDetailOriginalName = (TextView) findViewById(R.id.text_movie_detail_original_name);
@@ -51,7 +56,7 @@ public class MovieDetail extends AppCompatActivity {
         textMovideDetailRate = (TextView) findViewById(R.id.text_movie_detail_rate);
         textMovideDetailOverview = (TextView) findViewById(R.id.text_movie_detail_overview);
 
-        linearContainerMovieDetail.setVisibility(View.GONE);
+        frameContainerMovieDetail.setVisibility(View.VISIBLE);
         progressBarMovieDetail.setVisibility(View.VISIBLE);
 
 
@@ -59,10 +64,10 @@ public class MovieDetail extends AppCompatActivity {
 
         if(film != null){
 
-            linearContainerMovieDetail.setVisibility(View.VISIBLE);
+            frameContainerMovieDetail.setVisibility(View.GONE);
             progressBarMovieDetail.setVisibility(View.GONE);
 
-            textMovieDetailTitle.setText(film.getTitle());
+            getSupportActionBar().setTitle(film.getTitle());
 
             Picasso.with(this)
                     .load(IMAGE_BASE_URL + backDrop + film.getBackdropPath())
@@ -81,5 +86,15 @@ public class MovieDetail extends AppCompatActivity {
         }else {
             Toast.makeText(this, getString(R.string.error_movie_detail), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 }

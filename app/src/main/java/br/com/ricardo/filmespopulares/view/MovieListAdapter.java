@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import br.com.ricardo.filmespopulares.R;
-import br.com.ricardo.filmespopulares.model.pojo.ResponseFilm;
+import br.com.ricardo.filmespopulares.model.response.ResponseFilm;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListViewHolder> {
 

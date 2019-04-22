@@ -1,6 +1,6 @@
 package br.com.ricardo.filmespopulares.model.api;
 
-import br.com.ricardo.filmespopulares.model.pojo.ResultFilms;
+import br.com.ricardo.filmespopulares.model.response.ResultFilms;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

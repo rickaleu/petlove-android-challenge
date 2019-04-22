@@ -1,4 +1,4 @@
-package br.com.ricardo.filmespopulares.model.pojo;
+package br.com.ricardo.filmespopulares.model.response;
 
 import java.util.List;
 

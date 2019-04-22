@@ -19,14 +19,15 @@ import java.util.List;
 import br.com.ricardo.filmespopulares.Presenter.MoviePresenter;
 import br.com.ricardo.filmespopulares.Presenter.MoviePresenterImpl;
 import br.com.ricardo.filmespopulares.R;
-import br.com.ricardo.filmespopulares.model.pojo.ResponseFilm;
+import br.com.ricardo.filmespopulares.model.response.ResponseFilm;
 
 public class MovieList extends AppCompatActivity implements MovieView {
 
     private Toolbar toolbarMovieList;
+    private FrameLayout frameContainerMovieList;
+    private ProgressBar progressBarMovieList;
     private RecyclerView recyclerViewMovieList;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ProgressBar progressBarMovieList;
     private MovieListAdapter adapter;
 
     private MoviePresenter moviePresenter;
@@ -47,8 +48,9 @@ public class MovieList extends AppCompatActivity implements MovieView {
 
         movieList = new ArrayList<>();
 
+        frameContainerMovieList = (FrameLayout) findViewById(R.id.frame_container_movielist);
         progressBarMovieList = (ProgressBar) findViewById(R.id.progressBar_movielist);
-        progressBarMovieList.setVisibility(View.VISIBLE);
+        showLoading();
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container_movielist);
 
@@ -75,9 +77,23 @@ public class MovieList extends AppCompatActivity implements MovieView {
 
 
     @Override
+    public void showLoading() {
+
+        frameContainerMovieList.setVisibility(View.VISIBLE);
+        progressBarMovieList.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+
+        frameContainerMovieList.setVisibility(View.GONE);
+        progressBarMovieList.setVisibility(View.GONE);
+    }
+
+    @Override
     public void showData(ResponseFilm item) {
 
-        progressBarMovieList.setVisibility(View.GONE);
+        hideLoading();
 
         movieList.add(item);
 
@@ -111,6 +127,7 @@ public class MovieList extends AppCompatActivity implements MovieView {
     protected void onStart() {
         super.onStart();
 
+        showLoading();
         moviePresenter.requestPopularMovies();
     }
 
