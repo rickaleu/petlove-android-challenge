@@ -1,6 +1,8 @@
 package br.com.ricardo.filmespopulares.Presenter;
 
 import android.util.Log;
+
+import br.com.ricardo.filmespopulares.model.FilmInteractor;
 import br.com.ricardo.filmespopulares.model.FilmInteractorImpl;
 import br.com.ricardo.filmespopulares.model.response.ResponseFilm;
 import br.com.ricardo.filmespopulares.model.response.ResultFilms;
@@ -13,19 +15,27 @@ import static android.content.ContentValues.TAG;
 
 public class MoviePresenterImpl implements MoviePresenter{
 
-    private FilmInteractorImpl filmInteractor;
+    //Model
+    private FilmInteractor filmInteractor;
+    //View
     private MovieView movieView;
 
-    //Construtor setado pedindo apenas a view necessária pra carregar a lista. mas instanciando a classe FilmInteractorImpl
-    public MoviePresenterImpl(MovieView movieView) {
-        this.movieView = movieView;
-        this.filmInteractor = new FilmInteractorImpl();
+    //Construtor setando apenas a referência do Model(FilInteractor). A outra referência, a de View, vem pelo método attachView.
+    public MoviePresenterImpl(FilmInteractor interactor) {
+        this.filmInteractor = interactor;
+    }
+
+    //Este método attachView, servirá como a referência de View dentro do PresenterImpl.
+    @Override
+    public void attachView(MovieView view) {
+        this.movieView = view;
     }
 
     @Override
     public void detachView() {
-        movieView = null;
+        this.movieView = null;
     }
+
 
     //Aqui é quando a parte final da chamada da APU acontece.
     // Que é onde passamos a API Key como resto da url de requisição e
@@ -33,37 +43,33 @@ public class MoviePresenterImpl implements MoviePresenter{
     @Override
     public void requestPopularMovies() {
 
-        filmInteractor
-                .getRetrofitInstance()
+        movieView.showLoading();
+
+        filmInteractor.getRetrofitInstance()
                 .getPopularFilms("b70848b875278d63417beecbdddc4841")
                 .enqueue(new Callback<ResultFilms>() {
         @Override
         public void onResponse(Call<ResultFilms> call, Response<ResultFilms> response) {
 
-            if(!response.isSuccessful()) {
+            if(response.body() == null) {
                 Log.i(TAG, "Erro: " + response.code());
                 movieView.showError();
 
             } else {
 
-                try{
-                    ResultFilms resultFilms = response.body();
+                for(ResponseFilm rf : response.body().getResults()){
 
-                    if(resultFilms != null){
-                        for(ResponseFilm rf : resultFilms.getResults()){
-
-                            movieView.showData(rf);
-                        }
-                    }
-                } catch (Exception e){
-                    Log.i(TAG, "Erro. Falha na chamada da API.");
+                    movieView.addNewItemMovie(new ResponseFilm(rf.getRate(), rf.getTitle(), rf.getPosterPath(),
+                            rf.getLanguage(), rf.getOriginalTitle(), rf.getBackdropPath(), rf.getOverview(),
+                            rf.getReleaseDate()));
                 }
+
             }
         }
 
         @Override
         public void onFailure(Call<ResultFilms> call, Throwable t) {
-            Log.i(TAG, "Erro. Falha na chamada da API.");
+            Log.i(TAG, "Erro. Falha na chamada da API. 2");
             movieView.showError();
         }
     });

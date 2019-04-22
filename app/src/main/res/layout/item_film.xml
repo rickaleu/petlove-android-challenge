@@ -23,9 +23,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/image_movie_detail"
             android:padding="16dp"
+            android:text="Name"
             android:textAlignment="center"
             android:textColor="@android:color/black"
-            android:text="Name" />
+            android:textStyle="bold" />
 
 
         <LinearLayout
