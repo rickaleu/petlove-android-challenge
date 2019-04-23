@@ -7,7 +7,7 @@
 
 1. [Introdução](#introduction) 
 2. [Requisitos](#requirements) 
-3. [Organização](#organization)
+3. [Arquitetura](#architecture)
 4. [Recursos](#resources)
 5. [Considerações](#considerations)
 5. [Instalação](#setup)  
@@ -63,7 +63,7 @@ No endpoint princial GET .movie/popular, eu não encontrei 2 dados pedidos nos r
 
 Para rodar esse projeto utilize uma das seguintes formas:
 
-Instale o APK disponível na raíz do projeto (app-desafio-petlove)
+Instale o APK disponível na raíz do projeto (app-desafio-petlove.apk)
 
 ou
 
