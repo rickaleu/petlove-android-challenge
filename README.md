@@ -1,7 +1,7 @@
 # Desafio PetLove Android:
 
 <p align="center">
-  <img src="image/app.gif" align="center" width=150>
+  <img src="images/app.gif" align="center" width=150>
 </p>
 <a name="flow" />
 
@@ -26,7 +26,7 @@ Desafio proposto pela empresa de e-commerce PetLove para a vaga de desenvolvedor
 3. Em cada item do filme, possui uma tela de detalhe. Onde devem ser mostrados as informações: capa do filme, nome, avaliação, data de lançamento, autor e direção.
 4. Na tela principal, o usuário poderá atualizar a lista a qualquer momento.
 5. A avaliação será feita a partir dos seguintes pontos: qualidade do código, projeto e arquitetura, testes, automação e escalabilidade.
-8. O fluxo das telas está no topo e arquivo [Gif](https://github.com/rickaleu/petlove-android-challenge/blob/master/image/app.gif)app.gif.
+8. O fluxo das telas está no topo e arquivo [Gif](https://github.com/rickaleu/petlove-android-challenge/blob/master/images/app.gif)app.gif.
 <a name="architecture" />
 
 ## Arquitetura
