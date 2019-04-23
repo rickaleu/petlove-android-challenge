@@ -3,7 +3,7 @@ package br.com.ricardo.filmespopulares.Presenter;
 import android.util.Log;
 
 import br.com.ricardo.filmespopulares.model.FilmInteractor;
-import br.com.ricardo.filmespopulares.model.FilmInteractorImpl;
+import br.com.ricardo.filmespopulares.model.domain.Film;
 import br.com.ricardo.filmespopulares.model.response.ResponseFilm;
 import br.com.ricardo.filmespopulares.model.response.ResultFilms;
 import br.com.ricardo.filmespopulares.view.MovieView;
@@ -15,6 +15,7 @@ import static android.content.ContentValues.TAG;
 
 public class MoviePresenterImpl implements MoviePresenter{
 
+    private Film film;
     //Model
     private FilmInteractor filmInteractor;
     //View
@@ -59,11 +60,10 @@ public class MoviePresenterImpl implements MoviePresenter{
 
                 for(ResponseFilm rf : response.body().getResults()){
 
-                    movieView.addNewItemMovie(new ResponseFilm(rf.getRate(), rf.getTitle(), rf.getPosterPath(),
+                    movieView.addNewItemMovie(new Film(rf.getRate(), rf.getTitle(), rf.getPosterPath(),
                             rf.getLanguage(), rf.getOriginalTitle(), rf.getBackdropPath(), rf.getOverview(),
                             rf.getReleaseDate()));
                 }
-
             }
         }
 

@@ -20,8 +20,8 @@ import br.com.ricardo.filmespopulares.Presenter.MoviePresenterImpl;
 import br.com.ricardo.filmespopulares.R;
 import br.com.ricardo.filmespopulares.model.FilmInteractor;
 import br.com.ricardo.filmespopulares.model.FilmInteractorImpl;
+import br.com.ricardo.filmespopulares.model.domain.Film;
 import br.com.ricardo.filmespopulares.model.response.ResponseFilm;
-import br.com.ricardo.filmespopulares.model.response.ResultFilms;
 
 public class MovieList extends AppCompatActivity implements MovieView {
 
@@ -31,7 +31,7 @@ public class MovieList extends AppCompatActivity implements MovieView {
     private RecyclerView recyclerViewMovieList;
     private SwipeRefreshLayout swipeRefreshLayout;
     private MovieListAdapter adapter;
-    private List<ResponseFilm> movieList;
+    private List<Film> movieList;
 
     //Model
     private FilmInteractor filmInteractor;
@@ -81,36 +81,7 @@ public class MovieList extends AppCompatActivity implements MovieView {
 
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        moviePresenter.attachView(this);
-        if(movieList.size() == 0){
-            moviePresenter.requestPopularMovies();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        moviePresenter.attachView(this);
-        if(movieList.size() != 0){
-            adapter.clear();
-            moviePresenter.requestPopularMovies();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-
-        moviePresenter.detachView();
-        super.onStop();
-    }
-
-
-    @Override
-    public void addNewItemMovie(ResponseFilm item) {
+    public void addNewItemMovie(Film item) {
 
         movieList.add(item);
         adapter.notifyItemInserted(movieList.size());
@@ -122,7 +93,7 @@ public class MovieList extends AppCompatActivity implements MovieView {
 
                 Intent intent = new Intent(MovieList.this, MovieDetail.class);
 
-                ResponseFilm film = movieList.get(position);
+                Film film = movieList.get(position);
 
                 intent.putExtra(MovieDetail.EXTRA_FILM, film);
                 startActivity(intent);
@@ -151,4 +122,32 @@ public class MovieList extends AppCompatActivity implements MovieView {
         Toast.makeText(this, getString(R.string.error_movielist), Toast.LENGTH_LONG).show();
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        moviePresenter.attachView(this);
+        if(movieList.size() == 0){
+            moviePresenter.requestPopularMovies();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        moviePresenter.attachView(this);
+        if(movieList.size() != 0){
+            adapter.clear();
+            moviePresenter.requestPopularMovies();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+
+        moviePresenter.detachView();
+        super.onStop();
+    }
 }

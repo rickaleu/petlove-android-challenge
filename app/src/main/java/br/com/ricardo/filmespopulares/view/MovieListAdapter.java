@@ -13,19 +13,20 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import br.com.ricardo.filmespopulares.R;
+import br.com.ricardo.filmespopulares.model.domain.Film;
 import br.com.ricardo.filmespopulares.model.response.ResponseFilm;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListViewHolder> {
 
     public static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
-    private List<ResponseFilm> movieLists;
+    private List<Film> movieLists;
 
     //Atributo da interface.
     private static OnItemClickListener clickListener;
 
     //Contrutor do adapter
-    public MovieListAdapter(List<ResponseFilm> movieLists) {
+    public MovieListAdapter(List<Film> movieLists) {
         this.movieLists = movieLists;
     }
 
@@ -61,7 +62,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         movieLists.clear();
         notifyDataSetChanged();
     }
-
 
 
     public class MovieListViewHolder extends RecyclerView.ViewHolder{

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import br.com.ricardo.filmespopulares.R;
+import br.com.ricardo.filmespopulares.model.domain.Film;
 import br.com.ricardo.filmespopulares.model.response.ResponseFilm;
 
 public class MovieDetail extends AppCompatActivity {
@@ -60,7 +61,7 @@ public class MovieDetail extends AppCompatActivity {
         progressBarMovieDetail.setVisibility(View.VISIBLE);
 
 
-        ResponseFilm film = (ResponseFilm) getIntent().getSerializableExtra(EXTRA_FILM);
+        Film film = (Film) getIntent().getSerializableExtra(EXTRA_FILM);
 
         if(film != null){
 
