@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,13 +22,14 @@ import br.com.ricardo.filmespopulares.R;
 import br.com.ricardo.filmespopulares.model.FilmInteractor;
 import br.com.ricardo.filmespopulares.model.FilmInteractorImpl;
 import br.com.ricardo.filmespopulares.model.domain.Film;
-import br.com.ricardo.filmespopulares.model.response.ResponseFilm;
+import br.com.ricardo.filmespopulares.utils.CheckConnection;
 
 public class MovieList extends AppCompatActivity implements MovieView {
 
     private Toolbar toolbarMovieList;
     private FrameLayout frameContainerMovieList;
     private ProgressBar progressBarMovieList;
+    private TextView textListEmptyNoNetwork;
     private RecyclerView recyclerViewMovieList;
     private SwipeRefreshLayout swipeRefreshLayout;
     private MovieListAdapter adapter;
@@ -49,6 +51,7 @@ public class MovieList extends AppCompatActivity implements MovieView {
 
         frameContainerMovieList = (FrameLayout) findViewById(R.id.frame_container_movielist);
         progressBarMovieList = (ProgressBar) findViewById(R.id.progressBar_movielist);
+        textListEmptyNoNetwork = (TextView) findViewById(R.id.text_notice_no_network);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container_movielist);
 
         movieList = new ArrayList<>();
@@ -97,8 +100,6 @@ public class MovieList extends AppCompatActivity implements MovieView {
 
                 intent.putExtra(MovieDetail.EXTRA_FILM, film);
                 startActivity(intent);
-
-
             }
         });
     }
@@ -118,7 +119,17 @@ public class MovieList extends AppCompatActivity implements MovieView {
     }
 
     @Override
-    public void showError() {
+    public void showMessageNoConnection() {
+
+        frameContainerMovieList.setVisibility(View.VISIBLE);
+        progressBarMovieList.setVisibility(View.GONE);
+        textListEmptyNoNetwork.setVisibility(View.VISIBLE);
+
+        showError(String.valueOf(getString(R.string.connection_network)));
+    }
+
+    @Override
+    public void showError(String message) {
         Toast.makeText(this, getString(R.string.error_movielist), Toast.LENGTH_LONG).show();
     }
 

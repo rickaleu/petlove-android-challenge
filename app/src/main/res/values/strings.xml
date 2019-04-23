@@ -17,7 +17,10 @@
     <!-- Error Message -->
     <string name="error_movielist">Erro ao obter a lista de filmes.</string>
     <string name="error_movie_detail">Erro ao obter os dados dos filmes.</string>
-
+    <string name="presenter_response_null_error">Erro de retorno de conexão.</string>
+    <string name="presenter_response_failure_error">Falha na chamada da API.</string>
+    <string name="error_recycler_empty_network">Lista não carregada. Verifique suas conexões de rede.</string>
+    <string name="connection_network">Seu dispositivo parece estar offline. Verifique suas redes.</string>
 
 
 </resources>

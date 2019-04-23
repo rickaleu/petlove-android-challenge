@@ -15,9 +15,8 @@ import com.squareup.picasso.Picasso;
 
 import br.com.ricardo.filmespopulares.R;
 import br.com.ricardo.filmespopulares.model.domain.Film;
-import br.com.ricardo.filmespopulares.model.response.ResponseFilm;
 
-public class MovieDetail extends AppCompatActivity {
+public class MovieDetail extends AppCompatActivity implements MovieView{
 
     public static final String EXTRA_FILM = "EXTRA_FILM";
     public static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/";
@@ -57,16 +56,13 @@ public class MovieDetail extends AppCompatActivity {
         textMovideDetailRate = (TextView) findViewById(R.id.text_movie_detail_rate);
         textMovideDetailOverview = (TextView) findViewById(R.id.text_movie_detail_overview);
 
-        frameContainerMovieDetail.setVisibility(View.VISIBLE);
-        progressBarMovieDetail.setVisibility(View.VISIBLE);
-
+        showLoading();
 
         Film film = (Film) getIntent().getSerializableExtra(EXTRA_FILM);
 
         if(film != null){
 
-            frameContainerMovieDetail.setVisibility(View.GONE);
-            progressBarMovieDetail.setVisibility(View.GONE);
+            hideLoading();
 
             getSupportActionBar().setTitle(film.getTitle());
 
@@ -85,7 +81,7 @@ public class MovieDetail extends AppCompatActivity {
             textMovideDetailOverview.setText(film.getOverview());
 
         }else {
-            Toast.makeText(this, getString(R.string.error_movie_detail), Toast.LENGTH_SHORT).show();
+            showError(String.valueOf(getString(R.string.error_movie_detail)));
         }
     }
 
@@ -97,5 +93,34 @@ public class MovieDetail extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void addNewItemMovie(Film item) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+        frameContainerMovieDetail.setVisibility(View.VISIBLE);
+        progressBarMovieDetail.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+
+        frameContainerMovieDetail.setVisibility(View.GONE);
+        progressBarMovieDetail.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showMessageNoConnection() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.makeText(this, getString(R.string.error_movie_detail), Toast.LENGTH_SHORT).show();
     }
 }

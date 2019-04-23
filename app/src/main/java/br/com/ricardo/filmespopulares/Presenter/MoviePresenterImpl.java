@@ -1,11 +1,14 @@
 package br.com.ricardo.filmespopulares.Presenter;
 
+import android.content.Context;
 import android.util.Log;
 
+import br.com.ricardo.filmespopulares.R;
 import br.com.ricardo.filmespopulares.model.FilmInteractor;
 import br.com.ricardo.filmespopulares.model.domain.Film;
 import br.com.ricardo.filmespopulares.model.response.ResponseFilm;
 import br.com.ricardo.filmespopulares.model.response.ResultFilms;
+import br.com.ricardo.filmespopulares.utils.CheckConnection;
 import br.com.ricardo.filmespopulares.view.MovieView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,6 +17,8 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 public class MoviePresenterImpl implements MoviePresenter{
+
+    public static final String API_KEY = "b70848b875278d63417beecbdddc4841";
 
     private Film film;
     //Model
@@ -44,35 +49,42 @@ public class MoviePresenterImpl implements MoviePresenter{
     @Override
     public void requestPopularMovies() {
 
-        movieView.showLoading();
+        if (!CheckConnection.verifyConnection((Context) movieView)) {
 
-        filmInteractor.getRetrofitInstance()
-                .getPopularFilms("b70848b875278d63417beecbdddc4841")
-                .enqueue(new Callback<ResultFilms>() {
-        @Override
-        public void onResponse(Call<ResultFilms> call, Response<ResultFilms> response) {
+            movieView.showMessageNoConnection();
 
-            if(response.body() == null) {
-                Log.i(TAG, "Erro: " + response.code());
-                movieView.showError();
+        } else {
 
-            } else {
+            movieView.showLoading();
 
-                for(ResponseFilm rf : response.body().getResults()){
+            filmInteractor.getRetrofitInstance()
+                    .getPopularFilms(API_KEY)
+                    .enqueue(new Callback<ResultFilms>() {
+                        @Override
+                        public void onResponse(Call<ResultFilms> call, Response<ResultFilms> response) {
 
-                    movieView.addNewItemMovie(new Film(rf.getRate(), rf.getTitle(), rf.getPosterPath(),
-                            rf.getLanguage(), rf.getOriginalTitle(), rf.getBackdropPath(), rf.getOverview(),
-                            rf.getReleaseDate()));
-                }
-            }
+                            if(response.body() == null) {
+                                Log.i(TAG, "Erro: " + response.code());
+                                movieView.showError(String.valueOf(R.string.presenter_response_null_error));
+
+                            } else {
+
+                                for(ResponseFilm rf : response.body().getResults()){
+
+                                    movieView.addNewItemMovie(new Film(rf.getRate(), rf.getTitle(), rf.getPosterPath(),
+                                            rf.getLanguage(), rf.getOriginalTitle(), rf.getBackdropPath(), rf.getOverview(),
+                                            rf.getReleaseDate()));
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultFilms> call, Throwable t) {
+                            Log.i(TAG, "Erro. Falha na chamada da API.");
+                            movieView.showError(String.valueOf(R.string.presenter_response_failure_error));
+                        }
+                    });
+
         }
-
-        @Override
-        public void onFailure(Call<ResultFilms> call, Throwable t) {
-            Log.i(TAG, "Erro. Falha na chamada da API. 2");
-            movieView.showError();
-        }
-    });
-
     }
 }
